@@ -11,15 +11,21 @@ let interval = setInterval(async () => {
     try {
         let html = await rp(w00t);
         let $ = cheerio.load(html)
-        let current = $(".main-title").text();
-        if (lastItem != current) {
-            lastItem = current;
+        let currentItem = $(".main-title").text();
+        if (lastItem != currentItem) {
+            lastItem = currentItem;
+            // dig deeper and get the specific item details
+            let href = $(".main-title").parent().attr('href');
+            let detailHtml = await rp(href);
+            $ = cheerio.load(detailHtml);
+            let price = $('.price-exact > .price').text();
+            let discount = $('.price-exact > .discount > .percentage').text();
             notifier.notify({
                 title: 'NEW w00t item detected!',
-                message: current,
+                message: `'${currentItem}' for ${price} (${discount})`,
                 wait: config.wait,
                 sound: config.sound,
-                open: w00t,
+                open: href,
                 timeout: config.timeout,
                 closeLabel: 'Dismiss'
             });
