@@ -21,16 +21,17 @@ let interval = setInterval(async () => {
             let price = $('.price-exact > .price').text();
             let discount = $('.price-exact > .discount > .percentage').text();
             let message = `'${currentItem}' for ${price} (${discount})`;
-            notifier.notify({
-                title: 'NEW w00t item detected!',
-                message: message,
-                wait: config.wait,
-                sound: config.sound,
-                open: href,
-                timeout: config.timeout,
-                closeLabel: 'Dismiss'
-            });
-
+            if (config.desktopNotification) {
+                notifier.notify({
+                    title: 'NEW w00t item detected!',
+                    message: message,
+                    wait: config.wait,
+                    sound: config.sound,
+                    open: href,
+                    timeout: config.timeout,
+                    closeLabel: 'Dismiss'
+                });
+            }
             console.log(`${message} @ ${new Date().toLocaleTimeString()}`);
         }
     } catch (e) {

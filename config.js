@@ -1,4 +1,5 @@
 module.exports =  {
+    desktopNotification: true,
     wait: true,
     sound: false, // only in windows
     pollIntervalMS: 1000,
