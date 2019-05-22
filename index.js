@@ -20,15 +20,18 @@ let interval = setInterval(async () => {
             $ = cheerio.load(detailHtml);
             let price = $('.price-exact > .price').text();
             let discount = $('.price-exact > .discount > .percentage').text();
+            let message = `'${currentItem}' for ${price} (${discount})`;
             notifier.notify({
                 title: 'NEW w00t item detected!',
-                message: `'${currentItem}' for ${price} (${discount})`,
+                message: message,
                 wait: config.wait,
                 sound: config.sound,
                 open: href,
                 timeout: config.timeout,
                 closeLabel: 'Dismiss'
             });
+
+            console.log(`${message} @ ${new Date().toLocaleTimeString()}`);
         }
     } catch (e) {
         console.log(e.message)
