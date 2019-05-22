@@ -7,6 +7,7 @@ const notifier = require('node-notifier');
 const config = require('./config.js');
 const w00t = 'https://www.woot.com/category/sellout';
 let lastItem = ""
+let errCount = 0
 let interval = setInterval(async () => {
     try {
         let html = await rp(w00t);
@@ -33,10 +34,13 @@ let interval = setInterval(async () => {
                 });
             }
             console.log(`${message} @ ${new Date().toLocaleTimeString()}`);
+            errCount = 0
         }
     } catch (e) {
-        console.log(e.message)
-        console.log("uh oh! something went wrong!")
-        clearInterval(interval);
+        errCount += 1
+        console.log(`uh oh! something went wrong! ${errCount}`);
+        if (errCount > 10) {
+            clearInterval(interval);
+        }
     }
 }, config.pollIntervalMS);
