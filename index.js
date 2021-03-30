@@ -17,7 +17,8 @@ let interval = setInterval(async () => {
             lastItem = currentItem;
             // dig deeper and get the specific item details
             let href = $(".main-title").parent().attr('href');
-            let detailHtml = await rp(href);
+            let detailHtml = await rp(`https://sellout.woot.com${href}`);
+            console.log(detailHtml)
             $ = cheerio.load(detailHtml);
             let price = $('.price-exact > .price').text();
             let discount = $('.price-exact > .discount > .percentage').text();
